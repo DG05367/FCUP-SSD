@@ -1,6 +1,6 @@
 
 # Public Ledger for Auctions
-## System and Data Security 22/23
+#### System and Data Security 22/23
 
 This assignment requires the implementation of a public blockchain (non-permissioned), but opposite to Bitcoin and Ethereum, the purpose here is to have a decentralized public ledger capable of storing auction transactions.
 
