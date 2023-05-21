@@ -137,7 +137,7 @@ public class User {
         System.out.println("How many coins do you want to transfer\n");
         Scanner in = new Scanner(System.in);
         int coins = in.nextInt();
-        bChain.createTransaction(wallet.publicKey, wallet.getPrivateKey(), keyReceiver, coins);
+        bChain.createTransaction(wallet.getPublicKey(), wallet.getPrivateKey(), keyReceiver, coins);
 
     }
 

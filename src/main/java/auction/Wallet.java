@@ -13,11 +13,11 @@ import java.security.spec.ECGenParameterSpec;
 
 public class Wallet {
 
-    public PublicKey publicKey;
-    public PrivateKey privateKey;
-    public int lastBlockCheck;
-    public int balance;
-    public ArrayList<Transaction> trans;
+    private PublicKey publicKey;
+    private PrivateKey privateKey;
+    private int lastBlockCheck;
+    private int balance;
+    private ArrayList<Transaction> trans;
     Miner miner;
 
     public int getLastBlockCheck() {
@@ -31,6 +31,9 @@ public class Wallet {
         this.trans = null;
         miner = new Miner(bChain, this.publicKey, this.privateKey);
 
+    }
+
+    public Wallet() {
     }
 
     public void generateKeyPair(){
