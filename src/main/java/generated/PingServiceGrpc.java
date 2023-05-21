@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.54.1)",
+    value = "by gRPC proto compiler (version 1.51.1)",
     comments = "Source: kad.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class PingServiceGrpc {
@@ -92,32 +92,31 @@ public final class PingServiceGrpc {
 
   /**
    */
-  public interface AsyncService {
+  public static abstract class PingServiceImplBase implements io.grpc.BindableService {
 
     /**
      */
-    default void ping(generated.Kad.Target request,
+    public void ping(generated.Kad.Target request,
         io.grpc.stub.StreamObserver<generated.Kad.NodeInfo> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getPingMethod(), responseObserver);
     }
-  }
 
-  /**
-   * Base class for the server implementation of the service PingService.
-   */
-  public static abstract class PingServiceImplBase
-      implements io.grpc.BindableService, AsyncService {
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return PingServiceGrpc.bindService(this);
+    @java.lang.Override public io.grpc.ServerServiceDefinition bindService() {
+      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getPingMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                generated.Kad.Target,
+                generated.Kad.NodeInfo>(
+                  this, METHODID_PING)))
+          .build();
     }
   }
 
   /**
-   * A stub to allow clients to do asynchronous rpc calls to service PingService.
    */
-  public static final class PingServiceStub
-      extends io.grpc.stub.AbstractAsyncStub<PingServiceStub> {
+  public static final class PingServiceStub extends io.grpc.stub.AbstractAsyncStub<PingServiceStub> {
     private PingServiceStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -139,10 +138,8 @@ public final class PingServiceGrpc {
   }
 
   /**
-   * A stub to allow clients to do synchronous rpc calls to service PingService.
    */
-  public static final class PingServiceBlockingStub
-      extends io.grpc.stub.AbstractBlockingStub<PingServiceBlockingStub> {
+  public static final class PingServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<PingServiceBlockingStub> {
     private PingServiceBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -163,10 +160,8 @@ public final class PingServiceGrpc {
   }
 
   /**
-   * A stub to allow clients to do ListenableFuture-style rpc calls to service PingService.
    */
-  public static final class PingServiceFutureStub
-      extends io.grpc.stub.AbstractFutureStub<PingServiceFutureStub> {
+  public static final class PingServiceFutureStub extends io.grpc.stub.AbstractFutureStub<PingServiceFutureStub> {
     private PingServiceFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -194,10 +189,10 @@ public final class PingServiceGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final AsyncService serviceImpl;
+    private final PingServiceImplBase serviceImpl;
     private final int methodId;
 
-    MethodHandlers(AsyncService serviceImpl, int methodId) {
+    MethodHandlers(PingServiceImplBase serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -224,18 +219,6 @@ public final class PingServiceGrpc {
           throw new AssertionError();
       }
     }
-  }
-
-  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
-    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-        .addMethod(
-          getPingMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              generated.Kad.Target,
-              generated.Kad.NodeInfo>(
-                service, METHODID_PING)))
-        .build();
   }
 
   private static abstract class PingServiceBaseDescriptorSupplier
