@@ -18,47 +18,69 @@ import auction.User;
 
 import static java.lang.Integer.parseInt;
 
-
 public class Node {
 
-    public String id;
-    public byte[] hashedId;
-    public String ip;
-    public String port;
-    public int failedConns;
-    public StreamObserver[] connList ;
+    private String id;
+    private byte[] hashedId;
+    private String ip;
+    private String port;
+    private int failedConns;
+    private StreamObserver[] connList;
     private static Set<StreamObserver<User>> observers = ConcurrentHashMap.newKeySet();
-    final static int MAX_TRY_CONN_COUNT = 3;
+    static final int MAX_TRY_CONN_COUNT = 3;
 
-    public Node(String ip, String port){
+    public String getId() {
+        return id;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public int getFailedConns() {
+        return failedConns;
+    }
+
+    public byte[] getHashedId(){
+        return hashedId;
+    }
+
+    public StreamObserver[] getConnList(){
+        return connList;
+    }
+
+    public Node(String ip, String port) {
         this.id = String.valueOf(Math.random()).substring(2);
-        this.hashedId = ConvertPeerID(this.id);
+        this.hashedId = convertPeerID(this.id);
         this.ip = ip;
         this.port = port;
         this.failedConns = 0;
 
-        try{
+        try {
             myServer();
-        }catch (IOException ioEx){
+        } catch (IOException ioEx) {
             System.out.println("Server start not possible.\n");
             ioEx.printStackTrace();
-        }catch (InterruptedException iEx){
+        } catch (InterruptedException iEx) {
             System.out.println("Server process interrupted\n");
             iEx.printStackTrace();
         }
     }
 
-     public void myServer() throws IOException, InterruptedException {
-         Server server = ServerBuilder.forPort(parseInt(this.port)).addService(new PingServiceImpl()).build();
+    public void myServer() throws IOException, InterruptedException {
+        Server server = ServerBuilder.forPort(parseInt(this.port)).addService(new PingServiceImpl()).build();
 
-         server.start();
-     }
+        server.start();
+    }
 
-    public void ping(String ip, String port){
+    public void ping(String ip, String port) {
         int portInt = parseInt(port);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(ip, portInt).usePlaintext().build();
         PingServiceGrpc.PingServiceBlockingStub stub = PingServiceGrpc.newBlockingStub(channel);
-
 
         Kad.NodeInfo thisNode = Kad.NodeInfo.newBuilder()
                 .setIp(this.ip)
@@ -66,7 +88,7 @@ public class Node {
                 .build();
 
         Kad.NodeInfo nodeInfo = stub.ping(
-                        Kad.Target.newBuilder()
+                Kad.Target.newBuilder()
                         .setTargetId(ip)
                         .setSender(thisNode)
                         .build());
@@ -74,12 +96,12 @@ public class Node {
     }
 
     // ConvertPeerID creates a DHT id by hashing a Peer id
-    final public byte[] ConvertPeerID(String id){
+    public final byte[] convertPeerID(String id) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("sha256");
-            byte[] hash = messageDigest.digest(id.getBytes());//transforma a mensagem numa hash em bytes
+            byte[] hash = messageDigest.digest(id.getBytes());// transforma a mensagem numa hash em bytes
             return hash;
-        } catch (NoSuchAlgorithmException e) {//caso existe não reconheça o algoritmo de hash especificado
+        } catch (NoSuchAlgorithmException e) {// caso existe não reconheça o algoritmo de hash especificado
             throw new RuntimeException(e);
         }
     }
